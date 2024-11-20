@@ -1,0 +1,29 @@
+name: example
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ">=2.18.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_map: ^7.0.2
+  google_maps_flutter: ^2.10.0
+  latlong2: ^0.9.1
+  maplibre_gl: ^0.20.0
+  marker_tracker:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
