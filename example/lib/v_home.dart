@@ -31,13 +31,12 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          entry['page'], // Dynamically navigate to the page
+                      builder: (context) => entry['page'],
                     ),
                   );
                 },
                 child: Text(
-                  entry['label'], // Use the label for button text
+                  entry['label'], // Use the label for button texts
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
