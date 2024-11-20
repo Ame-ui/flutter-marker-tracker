@@ -1,70 +1,124 @@
 # Marker Tracker
 
-`marker_tracker` is a Flutter package designed to calculate and provide the offset for the tracker based on a specific `Location`. It helps developers easily manage and track marker positions on the screen, especially when using interactive maps.
+`marker_tracker` is a Flutter package that helps track the position of markers on a map even when they move outside the visible bounds. It calculates an offset that points to the direction of the marker relative to the map's visible area, making it useful for displaying directional indicators or guiding users to markers outside their current view.
 
 ## Features
 
-- Get precise screen offsets for any `LatLng` point.
-- Compatible with popular Flutter map libraries like:
+- **Directional Offsets**: Provides the offset to indicate the direction of a marker when it is outside the visible bounds of the map.
+- **Compatible with Popular Maps**: Works seamlessly with mapping libraries like:
   - [google_maps_flutter](https://pub.dev/packages/google_maps_flutter)
   - [flutter_map](https://pub.dev/packages/flutter_map)
-- Simplifies marker animations and real-time tracking.
-- Accurate calculations, even during zoom or map movements.
+- **Dynamic Tracking**: Handles map movements and zoom levels in real time.
 
-![Demo](https://raw.githubusercontent.com/Ame-ui/rotary-number-picker/main/picker_demo.gif)
+![Demo](https://raw.githubusercontent.com/Ame-ui/flutter-marker-tracker/main/demo.gif)
 
-<!-- (https://raw.githubusercontent.com/Ame-ui/rotary-number-picker/main/picker_demo.gif) -->
+<!-- https://github.com/Ame-ui/flutter-marker-tracker -->
 
 ## Installation
 
-Add `rotary_number_picker` to your `pubspec.yaml` file:
+Add `marker_tracker` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  rotary_number_picker: latest_version
+  marker_tracker: latest_version
 ```
 
 ## Usage
 
-```yaml
-import 'package:rotary_number_picker/rotary_number_picker.dart';
+```dart
+import 'package:marker_tracker/marker_tracker.dart';
 ```
 
 ## Example
 
-```dart
-import 'package:rotary_number_picker/rotary_number_picker.dart';
+Inside the onMapEvent of the FlutterMap
 
-RotaryNumberPicker(
-    circleDiameter: MediaQuery.of(context).size.width,
-    numberCircleColor: Colors.grey.withOpacity(0.2),
-    selectedNumberCircleColor: Colors.orange,
-    numberTextStyle: const TextStyle(color: Colors.black, fontSize: 14),
-    selectedNumberTextStyle: const TextStyle(
-        color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-    wheelBgColor: Colors.white,
-    wheelInnerCircleColor: Colors.grey.withOpacity(0.2),
-    dropAreaBorderColor: Colors.orange,
-    dropAreaColor: Colors.orange.withOpacity(0.2),
-    onGetNumber: (number) {
-        print('Selected number: $number');
+```dart
+final bound = mapController.camera.visibleBounds;
+MarkerTracker.calculateOffset(
+    centerLat: mapController.camera.center.latitude,
+    centerLng: mapController.camera.center.longitude,
+    trackLat: 16.819376,
+    trackLng: 96.178474,
+    mapWidth: mapWidth,
+    mapHeight: mapHeight,
+    trackerSize: trackerSize,
+    isCheckOutOfBound: true,
+    southWestLat: bound.southWest.latitude,
+    southWestLng: bound.southWest.longitude,
+    northEastLat: bound.northEast.latitude,
+    northEastLng: bound.northEast.longitude,
+    onGetOffset: (offset) {
+    if (offset == null) {
+        print(xShow.value);
+        if (xShow.value) xShow.value = false;
+    } else {
+        if (!xShow.value) xShow.value = true;
+        trackerPosition.value = offset;
+    }
     },
-),
+);
+```
+
+Inside the stack, on top of the map
+
+```dart
+ValueListenableBuilder<bool>(
+    valueListenable: xShow,
+    builder: (BuildContext context, bool value, Widget? child) {
+        return ValueListenableBuilder<Offset>(
+        valueListenable: trackerPosition,
+        builder: (context, position, child) {
+            return Positioned(
+            left: position.dx - trackerSize / 2,
+            top: position.dy - trackerSize / 2,
+            child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (child, animation) =>
+                    ScaleTransition(
+                scale: animation,
+                child: child,
+                ),
+                child: !value
+                    ? const SizedBox.shrink()
+                    : Container(
+                        width: trackerSize,
+                        height: trackerSize,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.red),
+                        child: const Icon(
+                        Icons.location_pin,
+                        color: Colors.white,
+                        size: 30,
+                        ),
+                    ),
+            ),
+            );
+        },
+        );
+    },
+    ),
 ```
 
 ## Parameters
 
-- circleDiameter: Diameter of the picker wheel (required).
-- numberCircleColor: Color of the circles of each number.
-- selectedNumberCircleColor: Color of the circle of the selected number.
-- numberTextStyle: Text style of the normal numbers text.
-- selectedNumberTextStyle: Text style of the selected number text.
-- wheelBgColor: Background color of the wheel.
-- wheelInnerCircleColor: Inner circle color of the wheel.
-- dropAreaBorderColor: Border color of the drop area.
-- dropAreaColor: Color of the drop area (prefer color with opacity).
-- onGetNumber: Callback function that returns the selected number (required)..
+-centerLat: Latitude of the center of the map
+-centerLng: Longitude of the center of the map
+-trackLat: Latitude of the marker to track
+-trackLng: Longitude of the marker to track
+-mapWidth: Width of the map widget
+-mapHeight: Height of the map widget
+-trackerSize: Size of the tracker
+-onGetOffset: this function provide the offset throught the Function(Offset offset)
+-isCheckOutOfBound: Whether to track the marker, [true]-only calculate the offset if the marker is outside of the visible bound, [false]- track the marker all the time even if the marke is inside the visible bound
+
+Parameter bellow are required if the isCheckOutOfBound is true
+-southWestLat: Latitude of the south-west corner of the visible bound
+-southWestLng: Longitude of the south-west corner of the visible bound
+-northEastLat: Latitude of the north-east corner of the visible bound
+-northEastLng: Longitude of the north-east corner of the visible bound
 
 ## Contribution
 
-Contributions are welcome! If you have any issues or feature requests, please create an issue on the ![GitHub repository](https://github.com/Ame-ui/rotary-number-picker).
+Contributions are welcome! If you have any issues or feature requests, please create an issue on the ![GitHub repository](https://github.com/Ame-ui/flutter-marker-tracker).
