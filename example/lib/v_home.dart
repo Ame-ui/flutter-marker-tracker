@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
                 child: Text(
-                  entry['label'], // Use the label for button texts
+                  entry['label'],
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

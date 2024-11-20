@@ -79,23 +79,28 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                       final bound =
                           await googleMapController!.getVisibleRegion();
 
-                      if (!bound.contains(const LatLng(16.819376, 96.178474))) {
-                        if (!xShow.value) xShow.value = true;
-                        MarkerTracker.calculateOffset(
-                          centerLat: position.target.latitude,
-                          centerLng: position.target.longitude,
-                          trackLat: 16.819376,
-                          trackLng: 96.178474,
-                          mapWidth: mapWidth,
-                          mapHeight: mapHeight,
-                          trackerSize: trackerSize,
-                          onGetOffset: (offset) {
+                      MarkerTracker.calculateOffset(
+                        centerLat: position.target.latitude,
+                        centerLng: position.target.longitude,
+                        trackLat: 16.819376,
+                        trackLng: 96.178474,
+                        mapWidth: mapWidth,
+                        mapHeight: mapHeight,
+                        trackerSize: trackerSize,
+                        isCheckOutOfBound: true,
+                        southWestLat: bound.southwest.latitude,
+                        southWestLng: bound.southwest.longitude,
+                        northEastLat: bound.northeast.latitude,
+                        northEastLng: bound.northeast.longitude,
+                        onGetOffset: (offset) {
+                          if (offset == null) {
+                            if (xShow.value) xShow.value = false;
+                          } else {
+                            if (!xShow.value) xShow.value = true;
                             trackerPosition.value = offset;
-                          },
-                        );
-                      } else {
-                        if (xShow.value) xShow.value = false;
-                      }
+                          }
+                        },
+                      );
                     },
                     markers: {
                       const Marker(

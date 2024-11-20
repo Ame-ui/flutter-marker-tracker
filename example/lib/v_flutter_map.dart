@@ -55,24 +55,30 @@ class _FlutterMapPageState extends State<FlutterMapPage> {
                       flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
                     ),
                     onMapEvent: (mapEvent) {
-                      if (!mapController.camera.visibleBounds
-                          .contains(const LatLng(16.819376, 96.178474))) {
-                        if (!xShow.value) xShow.value = true;
-                        MarkerTracker.calculateOffset(
-                          centerLat: mapController.camera.center.latitude,
-                          centerLng: mapController.camera.center.longitude,
-                          trackLat: 16.819376,
-                          trackLng: 96.178474,
-                          mapWidth: mapWidth,
-                          mapHeight: mapHeight,
-                          trackerSize: trackerSize,
-                          onGetOffset: (offset) {
+                      final bound = mapController.camera.visibleBounds;
+                      MarkerTracker.calculateOffset(
+                        centerLat: mapController.camera.center.latitude,
+                        centerLng: mapController.camera.center.longitude,
+                        trackLat: 16.819376,
+                        trackLng: 96.178474,
+                        mapWidth: mapWidth,
+                        mapHeight: mapHeight,
+                        trackerSize: trackerSize,
+                        isCheckOutOfBound: true,
+                        southWestLat: bound.southWest.latitude,
+                        southWestLng: bound.southWest.longitude,
+                        northEastLat: bound.northEast.latitude,
+                        northEastLng: bound.northEast.longitude,
+                        onGetOffset: (offset) {
+                          if (offset == null) {
+                            print(xShow.value);
+                            if (xShow.value) xShow.value = false;
+                          } else {
+                            if (!xShow.value) xShow.value = true;
                             trackerPosition.value = offset;
-                          },
-                        );
-                      } else {
-                        if (xShow.value) xShow.value = false;
-                      }
+                          }
+                        },
+                      );
                     },
                   ),
                   children: [

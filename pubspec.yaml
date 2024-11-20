@@ -1,7 +1,7 @@
 name: marker_tracker
 description: "A new Flutter package project."
 version: 0.0.1
-homepage: https://github.com/Ame-ui/marker-tracker
+homepage: https://github.com/Ame-ui/flutter-marker-tracker
 
 environment:
   sdk: ^3.5.3
