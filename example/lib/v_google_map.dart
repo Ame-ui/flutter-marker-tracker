@@ -29,26 +29,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   Widget build(BuildContext context) {
     final mapWidth = MediaQuery.of(context).size.width;
     final mapHeight = MediaQuery.of(context).size.height * 0.7;
-    LatLngBounds _getLatLngBounds(CameraPosition position) {
-      double lat = position.target.latitude;
-      double lng = position.target.longitude;
-      double zoom = position.zoom;
-
-      // Calculate a dynamic buffer size based on the zoom level
-      double latBuffer =
-          0.01 * (21 - zoom); // The larger the zoom, the smaller the buffer
-      double lngBuffer = 0.01 * (21 - zoom); // Same for longitude buffer
-
-      // Adjust the buffer to avoid too small values
-      latBuffer = latBuffer > 0.0001 ? latBuffer : 0.0001;
-      lngBuffer = lngBuffer > 0.0001 ? lngBuffer : 0.0001;
-
-      // Define bounds with a dynamic buffer around the center point
-      LatLng southwest = LatLng(lat - latBuffer, lng - lngBuffer);
-      LatLng northeast = LatLng(lat + latBuffer, lng + lngBuffer);
-
-      return LatLngBounds(southwest: southwest, northeast: northeast);
-    }
 
     return Scaffold(
       body: Column(

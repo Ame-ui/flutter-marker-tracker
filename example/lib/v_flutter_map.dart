@@ -71,7 +71,6 @@ class _FlutterMapPageState extends State<FlutterMapPage> {
                         northEastLng: bound.northEast.longitude,
                         onGetOffset: (offset) {
                           if (offset == null) {
-                            print(xShow.value);
                             if (xShow.value) xShow.value = false;
                           } else {
                             if (!xShow.value) xShow.value = true;

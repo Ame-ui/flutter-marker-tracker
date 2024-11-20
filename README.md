@@ -103,21 +103,22 @@ ValueListenableBuilder<bool>(
 
 ## Parameters
 
--centerLat: Latitude of the center of the map
--centerLng: Longitude of the center of the map
--trackLat: Latitude of the marker to track
--trackLng: Longitude of the marker to track
--mapWidth: Width of the map widget
--mapHeight: Height of the map widget
--trackerSize: Size of the tracker
--onGetOffset: this function provide the offset throught the Function(Offset offset)
--isCheckOutOfBound: Whether to track the marker, [true]-only calculate the offset if the marker is outside of the visible bound, [false]- track the marker all the time even if the marke is inside the visible bound
+- centerLat: Latitude of the center of the map.
+- centerLng: Longitude of the center of the map
+- trackLat: Latitude of the marker to track
+- trackLng: Longitude of the marker to track
+- mapWidth: Width of the map widget
+- mapHeight: Height of the map widget
+- trackerSize: Size of the tracker
+- onGetOffset: this function provide the offset throught the Function(Offset offset)
+- isCheckOutOfBound: Whether to track the marker, [true]-only calculate the offset if the marker is outside of the visible bound, [false]-track the marker all the time even if the marke is inside the visible bound
 
 Parameter bellow are required if the isCheckOutOfBound is true
--southWestLat: Latitude of the south-west corner of the visible bound
--southWestLng: Longitude of the south-west corner of the visible bound
--northEastLat: Latitude of the north-east corner of the visible bound
--northEastLng: Longitude of the north-east corner of the visible bound
+
+- southWestLat: Latitude of the south-west corner of the visible bound
+- southWestLng: Longitude of the south-west corner of the visible bound
+- northEastLat: Latitude of the north-east corner of the visible bound
+- northEastLng: Longitude of the north-east corner of the visible bound
 
 ## Contribution
 

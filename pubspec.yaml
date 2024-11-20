@@ -1,6 +1,6 @@
 name: marker_tracker
 description: "A flutter package to track the marker when is out of the bound"
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/Ame-ui/flutter-marker-tracker
 
 environment:
